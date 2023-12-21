@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PRIN134 Final Exam</title>
+  <link href="style.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+  <div class="container mt-4">
+    <h2>PRIN134 Final Exam</h2>
+    <hr>
+    <div>• (10Pts) Can add "to do" items. To do items will consists of a Title and Details.</div>
+    <div>• (10Pts) Created "to do" items should be displayed under "To Do Items" section.</div>
+    <div>• (10Pts) Can process the "to do" items using "First In First Out" or "First In Last Out" approach.</div>
+    <div>• (10Pts) Processed "to do" items should be displayed under "Done Items" section and removed in "To Do Items"
+      section.</div>
+    <div>• (10Pts) A reset button that will remove all items in "To Do Items" and "Done Items" sections.</div>
+    <div>• (20Pts) Bonus for layout.</div>
+
+    <div class="mt-3">
+      <form id="todo-farm">
+        <div class="form-group">
+          <label for="Title">Enter Title:</label>
+          <input type="text" class="form-control" id="title">
+        </div>
+        <div class="form-group">
+          <label for="Details">Enter Details:</label>
+          <textarea class="form-control" id="details" rows="3"></textarea>"
+        </div>
+        <button type="submit" class="btn btn-primary" onclick="addToDoItem()">Add</button>
+        <button type="button" class="btn btn-danger" onclick="resetApp()">Clear</button>
+      </form>
+
+      <div class="row row-cols-1 row-cols-md-2 mb-4">
+        <div class="col">
+          <h3>Processing</h3>
+          <p>Select a process for to do processing.</p>
+          <button class="btn btn-outline-info" type="button" id="btnFIFO" onclick="processTodo()">First In First Out</button>
+          <button class="btn btn-outline-info" type="button" id="btnFILO" onclick="processTodo()">First In Last Out</button>
+          <button class="btn btn-outline-info" type="button" id="btnReset" onclick="resetApp()">Reset</button>
+
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6">
+          <h4>To Do Items</h4>
+          <ul class="list-group" id="todo-list">
+
+          </ul>
+        </div>
+
+        <div class="col-md-6">
+          <h4>Done Items</h4>
+          <ul class="list-group" id="done-list">
+
+          </ul>
+        </div>
+      </div>
+
+      <script src="script.js"></script>
+      <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+      <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+      <script src="script.js" theme="dark" position="bottom-right"></script>
+        <script>
+          $(document).ready(function () {
+            $("#todo-farm").submit(function (event) {
+              event.preventDefault();
+              addToDoItem();
+            });
+        
+            function addToDoItem() {
+              var title = $("#title").val();
+              var details = $("#details").val();
+        
+              if (title && details) {
+                var listItem =
+                  '<li class="list-group-item">' +
+                  '<strong>' + title + '</strong><br>' +
+                  details +
+                  '</li>';
+        
+                $("#todo-list").append(listItem);
+        
+                $("#title, #details").val("");
+              }
+            }
+        
+            function resetApp() {
+              $("#todo-list, #done-list").empty();
+            }
+        
+            $("#btnFIFO").click(function () {
+              processItemsFIFO();
+            });
+        
+            $("#btnFILO").click(function () {
+              processItemsFILO();
+            });
+        
+            function processItemsFIFO() {
+              var todoItems = $("#todo-list li");
+              if (todoItems.length > 0) {
+                var itemToMove = todoItems.first().detach();
+                $("#done-list").append(itemToMove);
+              }
+            }
+        
+            function processItemsFILO() {
+              var todoItems = $("#todo-list li");
+              if (todoItems.length > 0) {
+                var itemToMove = todoItems.last().detach();
+                $("#done-list").append(itemToMove);
+              }
+            }
+          });
+        </script>
+      </body>
+      </html>
+
+
